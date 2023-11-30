@@ -11,16 +11,6 @@
   "pre-commit": {
     "enabled": true,
     "actions": [
-      {
-        "action": "echo 'Cannot push to master branch directly. Please use another branch.'; exit 1",
-        "options": {},
-        "conditions": [
-          {
-            "exec": "\\CaptainHook\\App\\Hook\\Condition\\OnBranch",
-            "args": ["main", "master", "develop"]
-          }
-        ]
-      },
       { "action": "composer run-script ecs:fix", "options": [] },
       { "action": "composer run-script rector:fix ", "options": [] },
       { "action": "npm run format:check", "options": [] },
