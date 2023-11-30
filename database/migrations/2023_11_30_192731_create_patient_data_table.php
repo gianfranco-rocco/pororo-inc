@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('height')->nullable();
             $table->date('birth_date')->nullable();
             $table
-                ->foreignIdFor(User::class, 'patient')
+                ->foreignIdFor(User::class, 'patient_id')
                 ->constrained('users');
             $table->timestamps();
         });
