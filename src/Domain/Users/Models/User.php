@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Users\Models;
 
 use Domain\Users\Enums\Role;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,14 +13,15 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Domain\Users\Models\User
  *
- * @property int                             $id
- * @property string                          $name
- * @property string                          $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property mixed                           $password
- * @property string|null                     $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int                        $id
+ * @property string                     $name
+ * @property string                     $last_name
+ * @property string                     $phone_number
+ * @property Role                       $role
+ * @property string                     $email
+ * @property string|null                $remember_token
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -36,11 +38,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- *
- * @property string      $last_name
- * @property string|null $phone_number
- * @property string      $role
- *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
@@ -57,17 +54,22 @@ class User extends Authenticatable
         'last_name',
         'phone_number',
         'email',
-        'password',
         'role'
     ];
 
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
     protected $casts = [
-        'password' => 'hashed',
         'role' => Role::class,
     ];
+
+    /**
+     * @return HasOne<PatientData>
+     */
+    public function patientData(): HasOne
+    {
+        return $this->hasOne(PatientData::class, 'patient_id');
+    }
 }

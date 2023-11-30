@@ -1,10 +1,8 @@
 <?php
 
-use App\Users\Controllers\DeleteUserController;
-use App\Users\Controllers\GetUserController;
-use App\Users\Controllers\ListUserController;
-use App\Users\Controllers\StoreUserController;
-use Illuminate\Http\Request;
+declare(strict_types=1);
+
+use App\Http\Controllers\Api\Users\StoreUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,20 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-/*
-|--------------------------------------------------------------------------
-| Users Routes
-|--------------------------------------------------------------------------
-*/
 Route::prefix('users')
-    ->middleware([])
-    ->group(static function () {
-        Route::get('/', ListUserController::class);
-        Route::get('/{user}', GetUserController::class);
-        Route::post('/', StoreUserController::class);
-        Route::delete('/{user}', DeleteUserController::class);
+    ->name('users.')
+    ->group(function () {
+        Route::post('/', StoreUserController::class)->name('store');
     });
