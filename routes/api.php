@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Users\ListUserController;
 use App\Http\Controllers\Api\Users\StoreUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('users')
     ->name('users.')
     ->group(function () {
+        Route::get('/', ListUserController::class)->name('index');
+
         Route::post('/', StoreUserController::class)->name('store');
     });
