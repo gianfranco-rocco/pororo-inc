@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('email')->unique();
             $table->enum('role', [Role::PATIENT->value, Role::CAREGIVER->value]);
+            $table->string('profile_picture_disk')->nullable();
+            $table->string('profile_picture_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

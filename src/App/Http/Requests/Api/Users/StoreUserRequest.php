@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Domain\Users\Enums\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class StoreUserRequest extends FormRequest
 {
@@ -19,6 +20,10 @@ class StoreUserRequest extends FormRequest
             'phone_number' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users'],
             'role' => ['required', Rule::enum(Role::class)],
+            'profile_picture' => [
+                'nullable',
+                File::image()->max('10mb')
+            ],
             'patient_data' => ['required_if:role,' . Role::PATIENT->value, 'array'],
             'patient_data.conditions' => ['string'],
             'patient_data.weight' => ['string'],

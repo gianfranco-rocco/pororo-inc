@@ -8,6 +8,7 @@ use Domain\Users\Enums\Role;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -19,6 +20,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string                     $phone_number
  * @property Role                       $role
  * @property string                     $email
+ * @property string|null                $profile_picture_disk
+ * @property string|null                $profile_picture_path
  * @property string|null                $remember_token
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
@@ -54,7 +57,9 @@ class User extends Authenticatable
         'last_name',
         'phone_number',
         'email',
-        'role'
+        'role',
+        'profile_picture_disk',
+        'profile_picture_path'
     ];
 
     protected $hidden = [
@@ -76,5 +81,23 @@ class User extends Authenticatable
     public function isPatient(): bool
     {
         return $this->role === Role::PATIENT;
+    }
+
+    public function profilePictureUrl(): ?string
+    {
+        $disk = $this->profile_picture_disk;
+        $path = $this->profile_picture_path;
+
+        if (! $disk || ! $path) {
+            return null;
+        }
+
+        $storage = Storage::disk($disk);
+
+        if ($disk === 'local') {
+            return $storage->path($path);
+        }
+
+        return $storage->url($path);
     }
 }

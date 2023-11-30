@@ -73,6 +73,7 @@
     "websockets",
     "Worksome",
     "xdebug",
-    "zustand"
+    "zustand",
+    "filesystems"
   ]
 }

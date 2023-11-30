@@ -9,6 +9,8 @@ use Domain\Users\Models\PatientData;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class StoreUserControllerTest extends TestCase
@@ -31,6 +33,39 @@ class StoreUserControllerTest extends TestCase
             ->assertCreated();
 
         $this->assertDatabaseHas(User::class, $data);
+    }
+
+    public function test_it_creates_a_user_and_uploads_their_profile_picture(): void
+    {
+        /** @var string $disk */
+        $disk = config('filesystems.default');
+
+        Storage::fake($disk);
+
+        $data = [
+            'name' => fake()->name(),
+            'last_name' => fake()->lastName(),
+            'phone_number' => fake()->phoneNumber(),
+            'email' => fake()->unique()->email(),
+            'role' => Role::CAREGIVER->value,
+            'profile_picture' => UploadedFile::fake()->image('image.jpg')
+        ];
+
+        /** @var array $response */
+        $response = $this
+            ->postJson(route('api.users.store'), $data)
+            ->assertCreated()
+            ->baseResponse
+            ->original;
+
+        unset($data['profile_picture']);
+
+        $this->assertDatabaseHas(User::class, $data);
+
+        /** @var User $user */
+        $user = User::find($response['data']['id']);
+
+        Storage::assertExists((string) $user->profile_picture_path);
     }
 
     public function test_it_creates_patient_and_stores_their_data(): void
