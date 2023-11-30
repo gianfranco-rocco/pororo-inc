@@ -70,6 +70,11 @@ class User extends Authenticatable
      */
     public function patientData(): HasOne
     {
-        return $this->hasOne(PatientData::class, 'patient_id');
+        return $this->hasOne(PatientData::class, 'patient_id', 'id');
+    }
+
+    public function isPatient(): bool
+    {
+        return $this->role === Role::PATIENT;
     }
 }

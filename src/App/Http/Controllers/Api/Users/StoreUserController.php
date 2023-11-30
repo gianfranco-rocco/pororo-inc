@@ -15,6 +15,10 @@ class StoreUserController
         /** @var User $user */
         $user = User::create((array) $request->validated());
 
+        if ($user->isPatient()) {
+            $user->patientData()->create((array) $request->validated('patient_data'));
+        }
+
         return responder()
             ->success($user)
             ->respond(JsonResponse::HTTP_CREATED);

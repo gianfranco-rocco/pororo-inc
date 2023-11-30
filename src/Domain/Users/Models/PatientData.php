@@ -52,6 +52,6 @@ class PatientData extends Model
      */
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'patient_id');
+        return $this->belongsTo(User::class, 'patient_id', 'id');
     }
 }
