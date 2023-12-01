@@ -7,10 +7,12 @@ namespace Domain\Users\Models;
 use Domain\Conversations\Models\Conversation;
 use Domain\Questions\Models\QuestionAnswer;
 use Domain\Users\Enums\Role;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -59,6 +61,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $answers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Conversation> $conversations
  * @property-read int|null $conversations_count
+ * @property int|null $caregiver_id
+ * @property-read User|null $caregiver
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCaregiverId($value)
  *
  * @mixin \Eloquent
  */
@@ -74,7 +80,8 @@ class User extends Authenticatable
         'email',
         'role',
         'profile_picture_disk',
-        'profile_picture_path'
+        'profile_picture_path',
+        'caregiver_id'
     ];
 
     protected $hidden = [
@@ -107,6 +114,24 @@ class User extends Authenticatable
     public function conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'patient_id');
+    }
+
+    /**
+     * @return BelongsTo<User, self>
+     */
+    public function caregiver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'caregiver_id');
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function careReceivers(): Collection
+    {
+        return User::query()
+            ->where('caregiver_id', $this->id)
+            ->get();
     }
 
     public function isPatient(): bool

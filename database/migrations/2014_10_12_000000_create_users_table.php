@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\Users\Enums\Role;
+use Domain\Users\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,10 @@ return new class extends Migration
             $table->enum('role', [Role::PATIENT->value, Role::CAREGIVER->value]);
             $table->string('profile_picture_disk')->nullable();
             $table->string('profile_picture_path')->nullable();
+            $table
+                ->foreignIdFor(User::class, 'caregiver_id')
+                ->nullable()
+                ->constrained('users');
             $table->rememberToken();
             $table->timestamps();
         });

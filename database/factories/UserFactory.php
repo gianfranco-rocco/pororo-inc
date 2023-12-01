@@ -25,6 +25,7 @@ class UserFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'role' => fake()->randomElement(Role::cases()),
             'remember_token' => Str::random(10),
+            'caregiver_id' => null,
         ];
     }
 
@@ -32,6 +33,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn () => [
             'role' => Role::PATIENT
+        ]);
+    }
+
+    public function caregiver(): static
+    {
+        return $this->state(fn () => [
+            'role' => Role::CAREGIVER
         ]);
     }
 }
