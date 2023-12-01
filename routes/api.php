@@ -33,10 +33,10 @@ Route::prefix('users')
         Route::get('/{user}', GetUserController::class)->name('show');
     });
 
-Route::prefix('conversations/{user}')
+Route::prefix('conversations')
     ->name('conversations.')
     ->group(static function () {
-        Route::post('/', StoreConversationController::class)->name('index');
+        Route::post('/{user}', StoreConversationController::class)->name('index');
 
         Route::prefix('messages/{conversation}')
             ->name('messages.')

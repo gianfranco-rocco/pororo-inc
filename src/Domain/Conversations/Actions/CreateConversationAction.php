@@ -25,7 +25,11 @@ class CreateConversationAction
             /** @var PuppeteerThread $thread */
             $thread = (new CreatePuppeteerThreadRequest())->send()->dto();
 
-            $conversation = Conversation::create(['ip' => $request->ip(), 'thread_id' => $thread->id]);
+            /** @var Conversation $conversation */
+            $conversation = $user->conversations()->create([
+                'ip' => $request->ip(),
+                'thread_id' => $thread->id,
+            ]);
 
             $content = Str::replace(':name', $user->name, self::ASSISTANT_FIRST_MESSAGE);
 

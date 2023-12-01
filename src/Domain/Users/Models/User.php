@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Users\Models;
 
+use Domain\Conversations\Models\Conversation;
 use Domain\Questions\Models\QuestionAnswer;
 use Domain\Users\Enums\Role;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,6 +57,8 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, QuestionAnswer> $answers
  * @property-read int|null $answers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Conversation> $conversations
+ * @property-read int|null $conversations_count
  *
  * @mixin \Eloquent
  */
@@ -96,6 +99,14 @@ class User extends Authenticatable
     public function answers(): HasMany
     {
         return $this->hasMany(UserAnswer::class, 'patient_id');
+    }
+
+    /**
+     * @return HasMany<Conversation>
+     */
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'patient_id');
     }
 
     public function isPatient(): bool

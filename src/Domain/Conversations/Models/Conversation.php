@@ -32,6 +32,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereThreadId($value)
  *
+ * @property int $patient_id
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation wherePatientId($value)
+ *
  * @mixin \Eloquent
  */
 class Conversation extends Model
