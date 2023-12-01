@@ -47,6 +47,10 @@ Route::prefix('conversations/{user}')
             });
     });
 
-Route::get('/questions/daily', GetDailyQuestionsController::class)->name('questions.daily');
+Route::prefix('questions')
+    ->name('questions.')
+    ->group(static function () {
+        Route::get('/daily', GetDailyQuestionsController::class)->name('daily');
 
-Route::post('/{patient}/questions/answer', AnswerQuestionController::class)->name('questions.answer');
+        Route::post('/{patient}/answer', AnswerQuestionController::class)->name('answer');
+    });
