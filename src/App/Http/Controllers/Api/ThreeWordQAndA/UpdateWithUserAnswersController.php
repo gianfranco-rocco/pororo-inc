@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\ThreeWordQAndA;
 
 use App\Http\Requests\Api\ThreeWordQAndA\UpdateThreeWordQAndARequest;
-use Domain\ThreeWordQAndA\Models\ThreeWordQAndA;
 use App\Transformers\ThreeWordQAndA\ThreeWordQAndATransformer;
+use Domain\ThreeWordQAndA\Models\ThreeWordQAndA;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class UpdateWithUserAnswersController
 {
     public function __invoke(
         UpdateThreeWordQAndARequest $request,
-        ThreeWordQAndA $game): JsonResponse
-    {
+        ThreeWordQAndA $game,
+    ): JsonResponse {
         $attributes = $request->only([
             'a_word_1', 'a_word_2', 'a_word_3'
         ]);

@@ -9,14 +9,15 @@ use Domain\ThreeWordQAndA\Models\ThreeWordQAndA;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 
-
-class InitializeGameAction {
-
+class InitializeGameAction
+{
     public function getThreeRandomWords(): WordsDto
     {
         $response = Http::get('https://random-word-api.herokuapp.com/word?number=3');
 
-        return new WordsDto(...$response->json());
+        $wordsArray = $response->json();
+
+        return new WordsDto(...$wordsArray);
     }
 
     public function execute(int $userId): ThreeWordQAndA

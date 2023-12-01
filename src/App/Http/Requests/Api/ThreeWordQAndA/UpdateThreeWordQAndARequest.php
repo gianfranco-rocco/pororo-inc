@@ -8,7 +8,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateThreeWordQAndARequest extends FormRequest
 {
-    public function rules(): array {
+    public function rules(): array
+    {
         return [
             'a_word_1' => ['required', 'max:255'],
             'a_word_2' => ['required', 'max:255'],

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\ThreeWordQAndA\Models;
 
 use Domain\Users\Models\User;
-use \Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Domain\ThreeWordQAndA\Models\ThreeWordQAndA
@@ -12,7 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ThreeWordQAndA newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThreeWordQAndA newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThreeWordQAndA query()
+ *
  * @property-read User|null $patient
+ *
  * @mixin \Eloquent
  */
 class ThreeWordQAndA extends Model
@@ -23,8 +27,7 @@ class ThreeWordQAndA extends Model
 
     /**
      * Get the user that owns the ThreeWordGameQAndA instance
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo<User, self>
      */
     public function patient(): BelongsTo
     {

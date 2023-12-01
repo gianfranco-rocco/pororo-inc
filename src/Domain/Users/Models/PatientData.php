@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Domain\Users\Models\User  $patient
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PatientData newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PatientData newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PatientData query()
