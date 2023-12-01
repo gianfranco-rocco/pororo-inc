@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Users\Models;
 
+use Domain\Questions\Models\QuestionAnswer;
 use Domain\Users\Enums\Role;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,6 +47,16 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
  *
+ * @property-read \Domain\Users\Models\PatientData|null $patientData
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, QuestionAnswer> $questionsAnswered
+ * @property-read int|null $questions_answered_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePictureDisk($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePicturePath($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, QuestionAnswer> $answers
+ * @property-read int|null $answers_count
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -76,6 +88,14 @@ class User extends Authenticatable
     public function patientData(): HasOne
     {
         return $this->hasOne(PatientData::class, 'patient_id', 'id');
+    }
+
+    /**
+     * @return HasMany<UserAnswer>
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(UserAnswer::class, 'patient_id');
     }
 
     public function isPatient(): bool

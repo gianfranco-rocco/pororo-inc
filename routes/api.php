@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Questions\GetDailyQuestionsController;
 use App\Http\Controllers\Api\Users\GetUserController;
 use App\Http\Controllers\Api\Users\ListUserController;
 use App\Http\Controllers\Api\Users\StoreUserController;
@@ -27,3 +28,5 @@ Route::prefix('users')
 
         Route::get('/{user}', GetUserController::class)->name('show');
     });
+
+Route::get('/questions/daily', GetDailyQuestionsController::class)->name('questions.daily');

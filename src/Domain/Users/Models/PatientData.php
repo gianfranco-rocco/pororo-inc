@@ -31,6 +31,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|PatientData whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PatientData whereWeight($value)
  *
+ * @property int $patient_id
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|PatientData wherePatientId($value)
+ *
  * @mixin \Eloquent
  */
 class PatientData extends Model
