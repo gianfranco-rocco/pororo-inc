@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\Users\GetUserController;
 use App\Http\Controllers\Api\Users\ListUserController;
 use App\Http\Controllers\Api\Users\StoreUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ThreeWordQAndA\StoreGameController;
+use App\Http\Controllers\Api\ThreeWordQAndA\UpdateWithUserAnswersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,4 +61,12 @@ Route::prefix('questions')
         Route::get('/daily', GetDailyQuestionsController::class)->name('daily');
 
         Route::post('/{patient}/answer', AnswerQuestionController::class)->name('answer');
+    });
+
+Route::prefix('game')
+    ->name('game.')
+    ->group(static function () {
+        Route::get('/{user}', StoreGameController::class);
+
+        Route::post('/{game}', UpdateWithUserAnswersController::class);
     });
