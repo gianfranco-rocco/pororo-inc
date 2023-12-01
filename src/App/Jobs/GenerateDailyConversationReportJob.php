@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Domain\Conversations\Models\Conversation;
 use Domain\Conversations\Models\Message;
 use Domain\Users\Models\User;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
@@ -86,7 +87,11 @@ class GenerateDailyConversationReportJob implements ShouldQueue
         $responseMessage = $message->json()['message'];
 
         /** @var array<string, array<string, string>> */
-        $decodedResponse = json_decode($responseMessage, true);
+        $decodedResponse = json_decode($responseMessage);
+
+        if (empty($decodedResponse['response']['takeaways'])) {
+            throw new Exception("No takeaways available.");
+        }
 
         /** @var string[] $takeaways */
         $takeaways = $decodedResponse['response']['takeaways'];
