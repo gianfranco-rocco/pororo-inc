@@ -9,7 +9,6 @@ use Domain\Conversations\Actions\CreateConversationAction;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class StoreConversationController
 {
@@ -18,14 +17,10 @@ class StoreConversationController
         User $user,
         CreateConversationAction $createConversationAction,
     ): JsonResponse {
-        $firstMessage = $createConversationAction->execute($request, $user);
-
-        $conversationToken = Crypt::encrypt(['conversation_id' => $firstMessage->conversation_id]);
-
-        $response = [...(new MessageTransformer())->transform($firstMessage), 'token' => $conversationToken];
+        $message = $createConversationAction->execute($request, $user);
 
         return responder()
-            ->success($response)
+            ->success($message, MessageTransformer::class)
             ->respond(JsonResponse::HTTP_CREATED);
     }
 }

@@ -16,6 +16,7 @@ class ConversationTransformer extends Transformer
     public function transform(Conversation $conversation): array
     {
         return [
+            'id' => $conversation->id,
             'finished' => $conversation->isClosed(),
             'verdictType' => null
         ];

@@ -6,6 +6,7 @@ namespace App\Transformers\Conversations;
 
 use Domain\Conversations\Models\Message;
 use Flugg\Responder\Transformers\Transformer;
+use Illuminate\Support\Facades\Crypt;
 
 class MessageTransformer extends Transformer
 {
@@ -27,6 +28,7 @@ class MessageTransformer extends Transformer
             'id' => $message->id,
             'role' => $message->role,
             'content' => $messageContent,
+            'token' => Crypt::encrypt(['conversation_id' => $message->conversation_id]),
             'sent_at' => $message->created_at,
         ];
     }
