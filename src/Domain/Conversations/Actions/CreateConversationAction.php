@@ -19,25 +19,27 @@ class CreateConversationAction
         'content' => "Hi :name, how can I help you today?",
     ];
 
-    public function execute(Request $request, User $user): Message
+    public function execute(Request $request, User $patient): Message
     {
-        return DB::transaction(function () use ($request, $user) {
+        return DB::transaction(function () use ($request, $patient) {
             /** @var PuppeteerThread $thread */
             $thread = (new CreatePuppeteerThreadRequest())->send()->dto();
 
             /** @var Conversation $conversation */
-            $conversation = $user->conversations()->create([
+            $conversation = $patient->conversations()->create([
                 'ip' => $request->ip(),
                 'thread_id' => $thread->id,
             ]);
 
-            $content = Str::replace(':name', $user->name, self::ASSISTANT_FIRST_MESSAGE);
+            $content = Str::replace(':name', $patient->name, self::ASSISTANT_FIRST_MESSAGE);
 
-            return Message::create([
-                'conversation_id' => $conversation->id,
+            /** @var Message $message */
+            $message = $conversation->messages()->create([
                 'role' => 'assistant',
                 'content' => json_encode($content)
             ]);
+
+            return $message;
         });
     }
 }
