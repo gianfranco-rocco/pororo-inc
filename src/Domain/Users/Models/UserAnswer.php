@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|UserAnswer whereQuestionAnswerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAnswer whereUpdatedAt($value)
  *
+ * @property-read \Domain\Users\Models\User $patient
+ *
  * @mixin \Eloquent
  */
 class UserAnswer extends Model
