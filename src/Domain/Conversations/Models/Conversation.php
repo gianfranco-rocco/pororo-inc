@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Conversations\Models;
 
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -13,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                             $id
  * @property string                          $ip
  * @property string                          $thread_id
+ * @property int                             $patient_id
  * @property \Illuminate\Support\Carbon      $created_at
  * @property \Illuminate\Support\Carbon      $updated_at
  * @property \Illuminate\Support\Carbon|null $closed_at
@@ -30,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Domain\Conversations\Models\Message> $messages
  * @property-read int|null $messages_count
+ * @property-read \Domain\Users\Models\User $patient
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereThreadId($value)
  *
@@ -50,6 +54,14 @@ class Conversation extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * @return BelongsTo<User, self>
+     */
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'patient_id');
     }
 
     public function isClosed(): bool
