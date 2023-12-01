@@ -13,27 +13,21 @@ use Illuminate\Support\Facades\DB;
 
 class StoreUserController
 {
-    public function __invoke(StoreUserRequest $request): JsonResponse
-    {
+    public function __invoke(
+        StoreUserRequest $request,
+        UploadProfilePictureAction $uploadProfilePictureAction,
+    ): JsonResponse {
         /** @var User $user */
-        $user = DB::transaction(function () use ($request) {
+        $user = DB::transaction(function () use ($request, $uploadProfilePictureAction) {
             /** @var User $user */
-            $user = new User((array) $request->validated());
+            $user = User::create((array) $request->except('profile_picture'));
 
-            if ($request->hasFile('profile_picture')) {
-                /** @var UploadedFile $file */
-                $file = $request->file('profile_picture');
+            /** @var UploadedFile|null $file */
+            $file = $request->file('profile_picture');
 
-                /** @var string $disk */
-                $disk = config('filesystems.default');
-                /** @var string $path */
-                $path = $file->store('profile-pictures');
-
-                $user->profile_picture_disk = $disk;
-                $user->profile_picture_path = $path;
+            if ($file) {
+                $uploadProfilePictureAction->execute($user, $file);
             }
-
-            $user->save();
 
             if ($user->isPatient()) {
                 $user->patientData()->create((array) $request->validated('patient_data'));
