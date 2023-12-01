@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Questions\AnswerQuestionController;
 use App\Http\Controllers\Api\Questions\GetDailyQuestionsController;
 use App\Http\Controllers\Api\Users\GetUserController;
 use App\Http\Controllers\Api\Users\ListUserController;
@@ -30,3 +31,5 @@ Route::prefix('users')
     });
 
 Route::get('/questions/daily', GetDailyQuestionsController::class)->name('questions.daily');
+
+Route::post('/{patient}/questions/answer', AnswerQuestionController::class)->name('questions.answer');

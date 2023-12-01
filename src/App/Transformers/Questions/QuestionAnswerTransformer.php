@@ -12,6 +12,7 @@ class QuestionAnswerTransformer extends Transformer
     public function transform(QuestionAnswer $questionAnswer): array
     {
         return [
+            'id' => $questionAnswer->id,
             'answer' => $questionAnswer->answer
         ];
     }

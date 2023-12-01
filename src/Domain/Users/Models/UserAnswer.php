@@ -41,7 +41,7 @@ class UserAnswer extends Model
     /**
      * @return BelongsTo<User, self>
      */
-    public function user(): BelongsTo
+    public function patient(): BelongsTo
     {
         return $this->belongsTo(User::class, 'patient_id');
     }
