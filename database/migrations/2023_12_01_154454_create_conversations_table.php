@@ -19,6 +19,7 @@ return new class extends Migration
                 ->foreignIdFor(User::class, 'patient_id')
                 ->constrained('users');
             $table->timestamps();
+            $table->timestamp('closed_at')->nullable();
         });
     }
 

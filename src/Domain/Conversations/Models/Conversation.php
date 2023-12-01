@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Domain\Conversations\Models\Conversation
  *
- * @property int                        $id
- * @property string                     $ip
- * @property string                     $thread_id
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property int                             $id
+ * @property string                          $ip
+ * @property string                          $thread_id
+ * @property \Illuminate\Support\Carbon      $created_at
+ * @property \Illuminate\Support\Carbon      $updated_at
+ * @property \Illuminate\Support\Carbon|null $closed_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation newQuery()
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $patient_id
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation wherePatientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereClosedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -48,5 +50,10 @@ class Conversation extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function isClosed(): bool
+    {
+        return ! is_null($this->closed_at);
     }
 }

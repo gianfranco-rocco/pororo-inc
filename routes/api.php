@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Conversations\CloseConversationController;
 use App\Http\Controllers\Api\Conversations\GetMessagesController;
 use App\Http\Controllers\Api\Conversations\StoreConversationController;
 use App\Http\Controllers\Api\Conversations\StoreMessageController;
@@ -36,7 +37,9 @@ Route::prefix('users')
 Route::prefix('conversations')
     ->name('conversations.')
     ->group(static function () {
-        Route::post('/{user}', StoreConversationController::class)->name('index');
+        Route::post('/{user}', StoreConversationController::class)->name('store');
+
+        Route::put('/{conversation}/close', CloseConversationController::class)->name('close');
 
         Route::prefix('messages/{conversation}')
             ->name('messages.')

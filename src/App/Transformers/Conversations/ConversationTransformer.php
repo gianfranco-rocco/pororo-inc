@@ -9,10 +9,14 @@ use Flugg\Responder\Transformers\Transformer;
 
 class ConversationTransformer extends Transformer
 {
+    public $relations = [
+        'messages' => MessageTransformer::class
+    ];
+
     public function transform(Conversation $conversation): array
     {
         return [
-            'finished' => false,
+            'finished' => $conversation->isClosed(),
             'verdictType' => null
         ];
     }
