@@ -17,7 +17,10 @@ class StoreConversationController
         User $user,
         CreateConversationAction $createConversationAction,
     ): JsonResponse {
-        $message = $createConversationAction->execute($request, $user);
+        /** @var string $ipAddress */
+        $ipAddress = $request->ip();
+
+        $message = $createConversationAction->execute($ipAddress, $user);
 
         return responder()
             ->success($message, MessageTransformer::class)

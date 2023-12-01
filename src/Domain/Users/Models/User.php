@@ -66,6 +66,9 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCaregiverId($value)
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Domain\Users\Models\PatientConversationTakeaway> $conversationTakeaways
+ * @property-read int|null $conversation_takeaways_count
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -132,6 +135,15 @@ class User extends Authenticatable
         return User::query()
             ->where('caregiver_id', $this->id)
             ->get();
+    }
+
+    /**
+     *
+     * @return HasMany<PatientConversationTakeaway>
+     */
+    public function conversationTakeaways(): HasMany
+    {
+        return $this->hasMany(PatientConversationTakeaway::class, 'patient_id');
     }
 
     public function isPatient(): bool

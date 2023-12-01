@@ -74,6 +74,8 @@
     "Worksome",
     "xdebug",
     "zustand",
-    "filesystems"
+    "filesystems",
+    "Queueable",
+    "Dispatchable"
   ]
 }

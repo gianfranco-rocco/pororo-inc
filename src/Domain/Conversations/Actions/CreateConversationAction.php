@@ -9,7 +9,6 @@ use App\Integrations\Puppeteer\Requests\CreatePuppeteerThreadRequest;
 use Domain\Conversations\Models\Conversation;
 use Domain\Conversations\Models\Message;
 use Domain\Users\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -19,15 +18,15 @@ class CreateConversationAction
         'content' => "Hi :name, how can I help you today?",
     ];
 
-    public function execute(Request $request, User $patient): Message
+    public function execute(string $ipAddress, User $patient): Message
     {
-        return DB::transaction(function () use ($request, $patient) {
+        return DB::transaction(function () use ($ipAddress, $patient) {
             /** @var PuppeteerThread $thread */
             $thread = (new CreatePuppeteerThreadRequest())->send()->dto();
 
             /** @var Conversation $conversation */
             $conversation = $patient->conversations()->create([
-                'ip' => $request->ip(),
+                'ip' => $ipAddress,
                 'thread_id' => $thread->id,
             ]);
 

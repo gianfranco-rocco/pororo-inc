@@ -42,4 +42,20 @@ class Message extends Model
     {
         return $this->belongsTo(Conversation::class);
     }
+
+    public function content(): string
+    {
+        $jsonContent = json_decode($this->content, true);
+
+        if (gettype($jsonContent) === 'array') {
+            return array_key_exists('content', $jsonContent) ? $jsonContent['content'] : '';
+        }
+
+        return $this->content;
+    }
+
+    public function isFromAssistant(): bool
+    {
+        return $this->role === 'assistant';
+    }
 }
