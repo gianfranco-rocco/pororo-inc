@@ -15,7 +15,9 @@ class InitializeGameAction
     {
         $response = Http::get('https://random-word-api.herokuapp.com/word?number=3');
 
-        $wordsArray = $response->json();
+        $wordsArray = (array) $response->json();
+
+        /** @var array<string> $wordsArray */
 
         return new WordsDto(...$wordsArray);
     }

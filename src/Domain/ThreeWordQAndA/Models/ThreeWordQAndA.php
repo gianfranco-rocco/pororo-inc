@@ -27,6 +27,7 @@ class ThreeWordQAndA extends Model
 
     /**
      * Get the user that owns the ThreeWordGameQAndA instance
+     *
      * @return BelongsTo<User, self>
      */
     public function patient(): BelongsTo
